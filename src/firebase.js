@@ -10,6 +10,7 @@ const config = {
   };
 firebase.initializeApp(config);
 
+const databaseRef = firebase.database().ref();
+export const articlesRef = databaseRef.child("articles");
+export const authRef = firebase.auth();
 export const provider = new firebase.auth.GoogleAuthProvider();
-export const auth = firebase.auth();
-export default firebase;

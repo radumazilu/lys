@@ -1,32 +1,28 @@
-'use strict';
-
 import React from 'react';
 import { Link } from 'react-router';
 
 class Header extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      user: null
+    }
+  }
+
   render() {
     return (
-      <nav className="navbar navbar-light">
-       <div className="container">
-         <Link to="/" className="navbar-brand">
-           { this.props.appName.toLowerCase() }
-         </Link>
-
-         <ul className="nav navbar-nav pull-xs-right">
-           <li className="nav-item">
-             <Link to="/" className="nav-link">
-               Home
-             </Link>
-           </li>
-
-           <li className="nav-item">
-             <Link to="login" className="nav-link">
-               Sign in
-             </Link>
-           </li>
-         </ul>
-       </div>
-      </nav>
+      <header>
+          <div className='wrapper'>
+            <Link to="/" className="navbar-brand">
+              <h1>{ this.props.appName.toLowerCase() }</h1>
+            </Link>
+              {this.props.user ?
+                <button onClick={this.props.logout}>Log Out</button>
+                :
+                <button onClick={this.props.login}>Log In</button>
+              }
+          </div>
+      </header>
     )
   }
 
