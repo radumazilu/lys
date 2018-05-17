@@ -1,12 +1,11 @@
 import React from 'react';
 import firebase, { auth, provider, addTaskToFirebase, removeTaskFromFirebase } from './firebase';
-import './App.css';
 import { connect } from 'react-redux';
-// import ArticleList from './components/ArticleList';
 import ArticleListFirebase from "./components/ArticleListFirebase";
+import ArticleView from './components/ArticleView';
 import SignIn from "./components/SignIn";
 import requireAuth from "./components/auth/requireAuth";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { fetchUser } from "./actions/index";
 
 class App extends React.Component {
@@ -18,10 +17,11 @@ class App extends React.Component {
   render() {
     return (
       <BrowserRouter>
-        <div className="container">
-          <Route exact path="/" component={SignIn} />
-          <Route path="/app" component={requireAuth(ArticleListFirebase)} />
-        </div>
+        <Switch>
+          <Route exact path="/" exact component={SignIn} />
+          <Route path="/app" exact component={requireAuth(ArticleListFirebase)} />
+          <Route path="/app/:id" exact component={ArticleView} />
+        </Switch>
       </BrowserRouter>
     );
   }

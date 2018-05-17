@@ -3,8 +3,7 @@
 
 html {
   position: relative;
-  min-height: 100vh;
-  padding-bottom: 100px; }
+  min-height: 100vh;}
 
 body {
   margin: 0;
@@ -5340,7 +5339,7 @@ footer {
 
 /* ArticleList css start */
 
-.to-do-list-container {
+.article-list-container {
   margin-top: 25px;
   width: 100%;
 }
@@ -5368,17 +5367,14 @@ footer {
 .add-form-wrapper {
   bottom: 0px;
   position: fixed;
-  z-index: 1000;
+  width: 100%;
+  z-index: 999;
   display: flex;
   justify-content: center;
   animation-duration: 0.5s;
   animation-name: slidein;
   padding: 20px !important;
   padding-bottom: 30px !important;
-}
-
-#article-add-form {
-  width: 100%;
 }
 
 .input-fields {
@@ -5388,8 +5384,12 @@ footer {
   align-items: center;
 }
 
-#nothing-was-found {
-  margin-top: 150px;
+.nothing-found {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 0;
 }
 
 @keyframes slidein {
@@ -5418,9 +5418,73 @@ footer {
 }
 
 .fixed-action-btn {
-  /* width: 54px; */
   bottom: 20px;
   right: 20px;
 }
 
+.article-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.details {
+  display: 'flex';
+  flex-direction: 'column';
+}
+
+.content: {
+  flex: '1 0 auto';
+}
+
+.play-icon {
+  height: 38px;
+  width: 38px;
+}
+
+#article-link {
+  margin: 0;
+}
+
+#article-title {
+  margin: 0;
+}
+
 /* ArticleList css finish */
+
+/* Recorder css start */
+
+.recorder-wrapper {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sound-wave {
+  width: 80%;
+}
+
+/* Recorder css finish */
+
+.signin-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url("img/signin-wallpaper.jpeg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.signin-paper {
+  padding: 20px;
+}
+
+/* Icons */
+
+.right-icon {
+  margin-left: 1em,
+}

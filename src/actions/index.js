@@ -19,10 +19,10 @@ export const fetchArticles = () => async dispatch => {
   });
 };
 
-export const recordBlob = (recordedBlob) => dispatch => {
+export const encodeAudio = (base64string) => dispatch => {
   dispatch({
-    type: "RECORD_BLOB",
-    payload: recordedBlob
+    type: "ENCODE_AUDIO",
+    payload: base64string
   })
 }
 

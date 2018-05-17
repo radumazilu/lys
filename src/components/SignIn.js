@@ -3,6 +3,11 @@ import { connect } from "react-redux";
 import { signIn } from "../actions/index";
 import PropTypes from "prop-types";
 
+import FaGoogle from 'react-icons/lib/fa/google';
+
+// updating to Material UI v1.0.0-rc.0
+import Paper from '@material-ui/core/Paper';
+
 class Signin extends Component {
   static contextTypes = {
     router: PropTypes.object
@@ -16,15 +21,16 @@ class Signin extends Component {
 
   render() {
     return (
-      <div className="row social-signin-container">
-        <i className="google icon"></i>
-        <div className="col s10 offset-s1 center-align">
-          <h4 id="sign-in-header">Sign In to start</h4>
+      <div className="signin-container">
+        <Paper elevation={2} className="signin-paper">
+          <h4 id="sign-in-header">Welcome to Lys</h4>
+          <p>Listen to the world's information</p>
+          <h5>Sign in to continue</h5>
           <a href="#" className="social-signin" onClick={this.props.signIn}>
             <i className="fa fa-google social-signin-icon" />
-            Sign In With Google
+            <FaGoogle style={{width: 30, height: 30}} />
           </a>
-        </div>
+        </Paper>
       </div>
     );
   }

@@ -1,7 +1,18 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { ReactMic } from 'react-mic';
-import { recordBlob } from '../actions/index';
+import { encodeAudio } from '../actions/index';
+import Microm from 'microm';
+
+// icons
+import FaPlay from 'react-icons/lib/fa/play';
+import FaStop from 'react-icons/lib/fa/stop';
+
+// updating to Material UI v1.0.0-rc.0
+import Button from '@material-ui/core/Button';
+
+const microm = new Microm();
+let mp3 = null;
 
 class Recorder extends React.Component {
   constructor(props) {
@@ -10,64 +21,64 @@ class Recorder extends React.Component {
       record: false,
       recordedBlob: {}
     }
-
   }
 
   startRecording = () => {
     this.setState({
       record: true
     });
+    microm.record().then(function() {
+      console.log('recording...')
+    }).catch(function() {
+      console.log('error recording');
+    });
   }
 
   stopRecording = () => {
+    const { encodeAudio } = this.props;
     this.setState({
       record: false
     });
+    microm.stop()
+      .then((result) => {
+        microm.download('my-voice')
+        microm.getBase64().then(function(base64string) {
+          // this is what we want to send to the database
+          console.log("encoded the audio and sent to the store");
+          // at the moment, if the user presses submit before this is done, the recording is not saved
+          encodeAudio(base64string);
+        });
+      });
   }
 
   onStop = (recordedBlob) => {
     this.setState({
       recordedBlob: recordedBlob
     });
-    // ---- experiment with converting blob to mp3 ----
-
-    // var file = {};
-    // var xhr = new XMLHttpRequest();
-    // xhr.open('GET', recordedBlob.blobURL, true);
-    // xhr.responseType = 'blob';
-    // xhr.onload = function(e) {
-    //   if (this.status == 200) {
-    //     file.file = this.response;
-    //     file.name = "recording.mp3";
-    //     // file.size = getYourBlobSize();
-    //     file.type = "audio/mpeg";
-    //     uploadAudioBlobs(file);
-    //   }
-    // };
-    // xhr.send();
-
-    // ---- end experiment ----
-    this.props.recordBlob(recordedBlob);
-    console.log('recordedBlob is: ', recordedBlob);
   }
 
   render() {
     return (
-      <div>
+      <div className="recorder-wrapper">
         <ReactMic
           record={this.state.record}
           className="sound-wave"
           onStop={this.onStop}
-          strokeColor="rgb(0, 188, 212)"
-          backgroundColor="#F8F8F8" />
-        <button onClick={this.startRecording} type="button">Start</button>
-        <button onClick={this.stopRecording} type="button">Stop</button>
-        {this.state.recordedBlob.blobURL ? (
-          <audio controls src={this.state.recordedBlob.blobURL}></audio>
-        ) : (<div></div>)}
+          strokeColor="#f50057"
+          backgroundColor="#fff" />
+        <div className="recorder-buttons">
+          <Button mini variant="fab" color="secondary" aria-label="start" onClick={this.startRecording}>
+            <FaPlay style={{width: 17}} />
+          </Button>
+          <Button mini variant="fab" color="secondary" aria-label="stop" onClick={this.stopRecording}>
+            <FaStop style={{width: 17}} />
+          </Button>
+          {/*<button onClick={this.startRecording} type="button">Start</button>
+        <button onClick={this.stopRecording} type="button">Stop</button>*/}
+        </div>
       </div>
     );
   }
 }
 
-export default connect(null, { recordBlob })(Recorder);
+export default connect(null, { encodeAudio })(Recorder);
