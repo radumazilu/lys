@@ -1,0 +1,40 @@
+{
+  "name": "base-app",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "firebase": "^4.13.1",
+    "react-scripts": "0.6.1"
+  },
+  "dependencies": {
+    "@material-ui/core": "^1.0.0-rc.0",
+    "jquery": "^3.3.1",
+    "marked": "^0.3.6",
+    "material-ui": "^0.20.0",
+    "materialize-css": "^1.0.0-rc.1",
+    "microm": "^0.2.4",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-icons": "^2.2.7",
+    "react-mic": "^9.2.0",
+    "react-redux": "^4.4.5",
+    "react-redux-firebase": "^2.1.0",
+    "react-router": "^3.2.1",
+    "react-router-dom": "^4.2.2",
+    "react-toolbox": "^2.0.0-beta.12",
+    "redux": "^3.6.0",
+    "redux-logger": "^2.6.1",
+    "redux-promise": "^0.5.3",
+    "redux-thunk": "^2.1.0",
+    "superagent": "^2.3.0",
+    "superagent-promise": "^1.1.0",
+    "unfluff": "^3.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "proxy": "http://localhost:5000/"
+}
