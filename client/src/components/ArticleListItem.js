@@ -9,7 +9,7 @@ import MdPause from 'react-icons/lib/md/pause';
 import MdDelete from 'react-icons/lib/md/delete';
 import MdOpenInNew from 'react-icons/lib/md/open-in-new';
 
-// updating to Material UI v1.0.0-rc.0
+// Material UI Next v1.0.0-rc.0
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';

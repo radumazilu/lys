@@ -7,7 +7,7 @@ import Recorder from './Recorder';
 import ArticleForm from './ArticleForm';
 import NavBar from './NavBar';
 
-// updating to Material UI v1.0.0-rc.0
+// Material UI Next v1.0.0-rc.0
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
@@ -16,8 +16,7 @@ import Paper from '@material-ui/core/Paper';
 class ArticleListFirebase extends React.Component {
 
   state = {
-    addFormVisible: false,
-    response: ''
+    addFormVisible: false
   };
 
   toggleRecorderVisibility = () => {
@@ -65,30 +64,6 @@ class ArticleListFirebase extends React.Component {
     // when the component mounts, fetch all articles
     this.props.fetchArticles();
   }
-
-  componentDidMount() {
-    // EXPRESS EXPERIMENT
-    this.callApi()
-      .then(res => {
-        console.log(res);
-        // this.setState({ response: res.express });
-        console.log("state updated");
-      })
-      .catch(err => console.log(err));
-    // END EXPRESS EXPERIMENT
-  }
-
-  // EXPRESS EXPERIMENT
-  callApi = async () => {
-    console.log("function was called");
-    const response = await fetch('/app/scrape?link=https://cs.stanford.edu/admissions/checklist');
-
-    const body = await response.json();
-    if (response.status !== 200) Error(body.message);
-
-    return body;
-  };
-  // END EXPRESS EXPERIMENT
 
   render() {
     const { addFormVisible } = this.state;

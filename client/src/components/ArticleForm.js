@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import * as actions from "../actions/index";
 import Recorder from "./Recorder";
 
-// updating to Material UI v1.0.0-rc.0
+// Material UI Next v1.0.0-rc.0
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
@@ -18,8 +18,21 @@ class ArticleForm extends React.Component {
     recorderVisible: false,
     submitButtonVisble: false,
     addFormTitle: "", // this will handle how the form changes
-    addFormLink: "" // this will handle how the form changes
+    addFormLink: "", // this will handle how the form changes
+    scrapedContent: "" // this will hold the scraped content coming from the api
   };
+
+  // EXPRESS EXPERIMENT
+  callApi = async (link) => {
+    console.log("API call was made");
+    const response = await fetch('/app/scrape?link=' + link);
+
+    const body = await response.json();
+    if (response.status !== 200) Error(body.message);
+
+    return body;
+  };
+  // END EXPRESS EXPERIMENT
 
   handleTitleChange = event => {
     this.setState({ addFormTitle: event.target.value });
@@ -29,21 +42,40 @@ class ArticleForm extends React.Component {
     this.setState({ addFormLink: event.target.value });
   };
 
-  handleFormSubmit = event => {
-    const { addFormTitle, addFormLink } = this.state;
+
+  prepareSubmit = async (callback, event) => {
+    const { addFormLink } = this.state;
+
+    event.preventDefault();
+
+    // makes the api call to scrape the content and waits for this before calling the callback
+    await this.callApi(addFormLink)
+      .then(res => {
+        this.setState({ scrapedContent: res.express });
+        // console.log(res.express);
+      })
+      .catch(err => console.log(err));
+
+    callback();
+  }
+
+
+  handleFormSubmit = () => {
+    const { addFormTitle, addFormLink, scrapedContent } = this.state;
     const { addArticle } = this.props;
     // recorder is the base64string of the recording received through the action
     const { user, recorder } = this.props;
-    event.preventDefault();
 
     console.log("the recording is: ", recorder);
+    console.log("scraped content: ", this.state.scrapedContent);
 
     // define new article
     let newArticle = {
       title: addFormTitle,
       link: addFormLink,
       user: user,
-      recording: recorder
+      recording: recorder,
+      scrapedContent: scrapedContent
     }
 
     // add article with stringified format
@@ -51,7 +83,8 @@ class ArticleForm extends React.Component {
     this.setState({
       addFormTitle: "",
       addFormLink: "",
-      addFormVisible: false
+      addFormVisible: false,
+      scrapedContent: ""
     });
   };
 
@@ -66,7 +99,7 @@ class ArticleForm extends React.Component {
       <Paper className="add-form-wrapper" elevation={2}>
         <div style={{width: "100%"}}>
           {recorderVisible ? (<Recorder/>) : (<div></div>)}
-          <form onSubmit={this.handleFormSubmit}>
+          <form onSubmit={this.prepareSubmit.bind(this, this.handleFormSubmit)}>
             <div className="input-fields">
               <TextField
                 id="article-title"

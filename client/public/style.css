@@ -5488,3 +5488,14 @@ footer {
 .right-icon {
   margin-left: 1em,
 }
+
+/* ArticleView css start */
+
+.content-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ArticleView css finish */

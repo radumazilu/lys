@@ -8,7 +8,7 @@ import Microm from 'microm';
 import FaPlay from 'react-icons/lib/fa/play';
 import FaStop from 'react-icons/lib/fa/stop';
 
-// updating to Material UI v1.0.0-rc.0
+// Material UI Next v1.0.0-rc.0
 import Button from '@material-ui/core/Button';
 
 const microm = new Microm();

@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 import FaGoogle from 'react-icons/lib/fa/google';
 
-// updating to Material UI v1.0.0-rc.0
+// Material UI Next v1.0.0-rc.0
 import Paper from '@material-ui/core/Paper';
 
 class Signin extends Component {
