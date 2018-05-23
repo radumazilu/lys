@@ -5498,4 +5498,31 @@ footer {
   align-items: center;
 }
 
+.recording-buttons {
+  max-width: 230px;
+  right: 50px;
+  position: fixed;
+  top: 35%;
+}
+
+.article-recording-actions {
+  justify-content: space-between;
+}
+
+#content-text {
+  font-family: 'Lora';
+  font-size: 16px;
+  letter-spacing: 0.5px;
+}
+
 /* ArticleView css finish */
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+  opacity: 0.8;
+  color: #039be5;
+}

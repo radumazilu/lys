@@ -20,7 +20,7 @@ function scrapeContent(req, res) {
   }
   PythonShell.run('./scraper.py', options, function (err, data) {
     if (err) res.send(err);
-    res.send({ express: data.toString() })
+    res.send({ express: data })
   });
 }
 

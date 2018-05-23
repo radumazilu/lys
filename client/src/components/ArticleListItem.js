@@ -20,9 +20,19 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
+import $ from 'jquery';
+
 class ArticleListItem extends React.Component {
+
   state = {
     recordingIsPlaying: false
+  }
+
+  componentDidMount() {
+    // this prevents buttons from remaining focused
+    $("button").mouseup(function() {
+      $(this).blur();
+    })
   }
 
   play = (sound) => {
@@ -40,7 +50,7 @@ class ArticleListItem extends React.Component {
     // make the recording available to this environment
     const sound = new Audio(article.recording);
     return (
-      <Grid item xs={12} sm={6} md={4}>
+      <Grid item xs={12} sm={6} md={6}>
         <Card className="article-card">
           <CardHeader
             avatar={
@@ -51,7 +61,10 @@ class ArticleListItem extends React.Component {
             action={
               <Link to={{
                       pathname: `/app/${articleId}`,
-                      state: { article: article }
+                      state: {
+                        article: article,
+                        articleId: articleId
+                      }
                     }}>
                 <IconButton color="default">
                   <MdOpenInNew />
@@ -61,10 +74,15 @@ class ArticleListItem extends React.Component {
           />
           <div className="details">
             <CardContent className="content">
-              <Typography component="p">
-                This impressive paella is a perfect party dish and a fun meal to cook together with
-                your guests. Add 1 cup of frozen peas along with the mussels, if you like.
-              </Typography>
+              { article.scrapedContent ? (
+                <Typography component="p">
+                  {String(article.scrapedContent).split(' ').slice(0, 30).join(' ') + ' ...'}
+                </Typography>
+              ) : (
+                <Typography component="p">
+                  No caption available
+                </Typography>
+              ) }
             </CardContent>
             <div className="controls" style={{display: "flex", alignItems: 'center', padding: 10}}>
               <IconButton aria-label="Delete" onClick={() => deleteArticle(articleId)}>

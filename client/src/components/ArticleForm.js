@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux";
-import * as actions from "../actions/index";
-import Recorder from "./Recorder";
+import * as actions from '../actions/index';
+import RecorderComponent from './RecorderComponent';
 
 // Material UI Next v1.0.0-rc.0
 import Grid from '@material-ui/core/Grid';
@@ -10,6 +10,8 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+
+import $ from 'jquery';
 
 class ArticleForm extends React.Component {
 
@@ -22,7 +24,13 @@ class ArticleForm extends React.Component {
     scrapedContent: "" // this will hold the scraped content coming from the api
   };
 
-  // EXPRESS EXPERIMENT
+  componentDidMount() {
+    // this prevents buttons from remaining focused
+    $("button").mouseup(function() {
+      $(this).blur();
+    })
+  }
+
   callApi = async (link) => {
     console.log("API call was made");
     const response = await fetch('/app/scrape?link=' + link);
@@ -32,7 +40,6 @@ class ArticleForm extends React.Component {
 
     return body;
   };
-  // END EXPRESS EXPERIMENT
 
   handleTitleChange = event => {
     this.setState({ addFormTitle: event.target.value });
@@ -41,7 +48,6 @@ class ArticleForm extends React.Component {
   handleLinkChange = event => {
     this.setState({ addFormLink: event.target.value });
   };
-
 
   prepareSubmit = async (callback, event) => {
     const { addFormLink } = this.state;
@@ -52,13 +58,11 @@ class ArticleForm extends React.Component {
     await this.callApi(addFormLink)
       .then(res => {
         this.setState({ scrapedContent: res.express });
-        // console.log(res.express);
       })
       .catch(err => console.log(err));
 
     callback();
   }
-
 
   handleFormSubmit = () => {
     const { addFormTitle, addFormLink, scrapedContent } = this.state;
@@ -98,7 +102,7 @@ class ArticleForm extends React.Component {
     return (
       <Paper className="add-form-wrapper" elevation={2}>
         <div style={{width: "100%"}}>
-          {recorderVisible ? (<Recorder/>) : (<div></div>)}
+          {recorderVisible ? (<RecorderExperiment/>) : (<div></div>)}
           <form onSubmit={this.prepareSubmit.bind(this, this.handleFormSubmit)}>
             <div className="input-fields">
               <TextField

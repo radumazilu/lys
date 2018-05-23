@@ -9,6 +9,10 @@ export const deleteArticle = articleId => async dispatch => {
   articlesRef.child(articleId).remove();
 };
 
+export const updateFirebaseArticle = (articleId, data) => async dispatch => {
+  articlesRef.child(articleId).update(data);
+}
+
 export const fetchArticles = () => async dispatch => {
   console.log("fetching articles ...");
   articlesRef.on("value", snapshot => {

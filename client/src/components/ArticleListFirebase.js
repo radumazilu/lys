@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import * as actions from '../actions/index';
 import ArticleListItem from './ArticleListItem';
-import Recorder from './Recorder';
 import ArticleForm from './ArticleForm';
 import NavBar from './NavBar';
+import $ from 'jquery';
 
 // Material UI Next v1.0.0-rc.0
 import Grid from '@material-ui/core/Grid';
@@ -18,6 +18,13 @@ class ArticleListFirebase extends React.Component {
   state = {
     addFormVisible: false
   };
+
+  componentDidMount() {
+    // this prevents buttons from remaining focused
+    $("button").mouseup(function() {
+      $(this).blur();
+    })
+  }
 
   toggleRecorderVisibility = () => {
     if (this.state.recorderVisible) {
@@ -72,7 +79,7 @@ class ArticleListFirebase extends React.Component {
       <div>
         <NavBar />
         {this.renderAddForm()}
-        <div className="wrapper container">
+        <div className="wrapper container" style={{ paddingTop: 64 }}>
           <div className="article-list-container">
             <Grid container spacing={8}>
               {this.renderArticles()}

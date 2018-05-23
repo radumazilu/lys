@@ -2,7 +2,6 @@ import React from 'react';
 import { signOut } from "../actions/index";
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-// import { VoicePlayer, VoiceRecognition } from 'react-voice-components';
 
 // icons
 import MdPlayArrow from 'react-icons/lib/md/play-arrow';
@@ -21,13 +20,19 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
-// imports for text extraction
-import $ from "jquery";
+import $ from 'jquery';
 
 class NavBar extends React.Component {
 
   state = {
     drawerOpen: false
+  }
+
+  componentDidMount() {
+    // this prevents buttons from remaining focused
+    $("button").mouseup(function() {
+      $(this).blur();
+    })
   }
 
   toggleDrawer = (open) => {
@@ -50,19 +55,12 @@ class NavBar extends React.Component {
   render() {
     // make the recording available to this environment
     let sound = '';
-    if (this.props.article) {
-      sound = new Audio(this.props.article.recording);
+    if (this.props.recording) {
+      sound = new Audio(this.props.recording);
     }
-    const sideList = (
-      <div style={{width: 250}}>
-        <List></List>
-        <Divider />
-        <List></List>
-      </div>
-    );
     return (
       <div style={{flexGrow: 1}}>
-        <AppBar position="sticky">
+        <AppBar style={{ position: "fixed" }}>
           <Toolbar>
             <IconButton onClick={() => this.toggleDrawer(true)} color="inherit" aria-label="Menu" style={{marginLeft: -12, marginRight: 20}}>
               <i className="material-icons">menu</i>
@@ -71,7 +69,7 @@ class NavBar extends React.Component {
               Lys
             </Typography>
             {/* if we are in the article view, display play/pause buttons */}
-            {this.props.articleView ? (
+            {this.props.articleView && this.props.recording ? (
               <div>
                 <Button size="small" style={{color: '#fff'}} onClick={() => this.play(sound)}>
                   Play <MdPlayArrow style={{marginLeft: 8, fontSize: 18}} />

@@ -6,6 +6,7 @@ import webbrowser # for opening the link in a browser window
 import requests
 from translation import translate
 import sys
+from goose3 import Goose
 
 def scrape_content(link):
     '''
@@ -13,20 +14,28 @@ def scrape_content(link):
     If an error is returned by MercuryParser, BeautifulSoup is used for scraping
     '''
     try:
-        # Scraped using MercuryParser
-        text = mercury_scraper(link)
+        try:
+            # Scraped using python goose
+            text = goose_scraper(link)
+        except:
+            # Scraped using MercuryParser
+            text = mercury_scraper(link)
     except:
         # MercuryParser returned an error.
         # We will use BeautifulSoup as an alternative.
         # Scraped using BeautifulSoups
         text = soup_scraper(link)
 
-    # print("\nOpening the webpage for article checking...")
-    # webbrowser.open_new_tab(link)
-
     print(text)
     return text
 
+def goose_scraper(link):
+    '''
+    Returns cleaned text using the python goose3 api
+    '''
+    g = Goose()
+    article = g.extract(link)
+    return article.cleaned_text
 
 def mercury_scraper(link):
     '''
