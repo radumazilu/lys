@@ -102,7 +102,7 @@ class ArticleForm extends React.Component {
     return (
       <Paper className="add-form-wrapper" elevation={2}>
         <div style={{width: "100%"}}>
-          {recorderVisible ? (<RecorderExperiment/>) : (<div></div>)}
+          {recorderVisible ? (<RecorderComponent/>) : (<div></div>)}
           <form onSubmit={this.prepareSubmit.bind(this, this.handleFormSubmit)}>
             <div className="input-fields">
               <TextField

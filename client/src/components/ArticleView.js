@@ -132,7 +132,7 @@ class ArticleView extends React.Component {
               </Typography>
             </CardContent>
             <CardActions className="article-recording-actions">
-              <RecorderExperiment callbackFromParent={this.getBackRecordingFromChild} articleView={true} article={article} articleId={id} />
+              <RecorderComponent callbackFromParent={this.getBackRecordingFromChild} articleView={true} article={article} articleId={id} />
             </CardActions>
           </Card>
         </div>

@@ -8,11 +8,12 @@
   },
   "dependencies": {
     "express": "^4.16.2",
+    "nodemon": "^1.17.5",
     "python-shell": "^0.5.0",
     "react-voice-components": "^1.0.0"
   },
   "devDependencies": {
     "case-sensitive-paths-webpack-plugin": "^2.1.2",
-    "concurrently": "^3.5.0"
+    "concurrently": "^3.5.1"
   }
 }
