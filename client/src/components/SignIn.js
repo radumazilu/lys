@@ -8,7 +8,7 @@ import FaGoogle from 'react-icons/lib/fa/google';
 // Material UI Next v1.0.0-rc.0
 import Paper from '@material-ui/core/Paper';
 
-class Signin extends Component {
+class SignIn extends Component {
   static contextTypes = {
     router: PropTypes.object
   };
@@ -40,4 +40,4 @@ const mapStateToProps = state => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { signIn })(Signin);
+export default connect(mapStateToProps, { signIn })(SignIn);

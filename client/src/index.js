@@ -11,7 +11,7 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import { allReducers } from './reducers/index';
 
-// create store with allReducers, initialState and the code for redux devTools
+// create store with allReducers, initialState and reduxThunk
 const store = createStore(
   allReducers,
   {},
