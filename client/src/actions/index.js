@@ -30,6 +30,13 @@ export const encodeAudio = (base64string) => dispatch => {
   })
 }
 
+export const sendRecordingRef = (ref) => dispatch => {
+  dispatch({
+    type: "SEND_RECORDING_REF",
+    payload: ref
+  })
+}
+
 export const fetchUser = () => dispatch => {
   // if the user exists (i.e. is logged in), send a payload with the user information
   authRef.onAuthStateChanged(user => {

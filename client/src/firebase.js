@@ -11,6 +11,8 @@ const config = {
 firebase.initializeApp(config);
 
 const databaseRef = firebase.database().ref();
+const storageRef = firebase.storage().ref();
 export const articlesRef = databaseRef.child("articles");
+export const recordingsStorageRef = storageRef.child("recordings");
 export const authRef = firebase.auth();
 export const provider = new firebase.auth.GoogleAuthProvider();

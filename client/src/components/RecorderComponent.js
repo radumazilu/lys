@@ -1,7 +1,8 @@
 import React from 'react';
 import Recorder from '../recorder.js';
-import { connect } from 'react-redux';
-import { encodeAudio, updateFirebaseArticle } from '../actions/index';
+import {connect} from 'react-redux';
+import {encodeAudio, updateFirebaseArticle, sendRecordingRef} from '../actions/index';
+import {recordingsStorageRef} from '../firebase';
 
 // icons
 import MdPlayArrow from 'react-icons/lib/md/play-arrow';
@@ -18,7 +19,7 @@ class RecorderComponent extends React.Component {
     audio_stream: '',
     recorder: '',
     audio_context: '',
-    recordingString: '',
+    recordingString: ''
   }
 
   componentDidMount() {
@@ -45,9 +46,12 @@ class RecorderComponent extends React.Component {
       window.URL = window.URL || window.webkitURL;
 
       // Store the instance of AudioContext globally
-      this.setState({ audio_context: new AudioContext });
+      this.setState({audio_context: new AudioContext});
       console.log('Audio context is ready !');
-      console.log('navigator.getUserMedia ' + (navigator.getUserMedia ? 'available.' : 'not present!'));
+      console.log('navigator.getUserMedia ' + (
+        navigator.getUserMedia
+        ? 'available.'
+        : 'not present!'));
     } catch (e) {
       alert('No web audio support in this browser!');
     }
@@ -65,13 +69,13 @@ class RecorderComponent extends React.Component {
       audio: true
     }, (stream) => {
       // Expose the stream to be accessible globally
-      this.setState({ audio_stream: stream });
+      this.setState({audio_stream: stream});
       // Create the MediaStreamSource for the Recorder library
       let input = this.state.audio_context.createMediaStreamSource(stream);
       console.log('Media stream succesfully created');
 
       // Initialize the Recorder Library
-      this.setState({ recorder: new Recorder(input) });
+      this.setState({recorder: new Recorder(input)});
       console.log('Recorder initialised');
 
       // Start recording !
@@ -90,7 +94,7 @@ class RecorderComponent extends React.Component {
    * optional and specifies the format to export the blob either wav or mp3
    */
   stopRecording = (callback, AudioFormat) => {
-    const { encodeAudio } = this.props;
+    const {encodeAudio, sendRecordingRef} = this.props;
 
     // Stop the recorder instance
     this.state.recorder && this.state.recorder.stop();
@@ -109,15 +113,31 @@ class RecorderComponent extends React.Component {
        * you provide the second argument of the function
        */
       this.state.recorder && this.state.recorder.exportWAV((blob) => {
-        console.log('blob: ', blob);
         let reader = new FileReader();
         reader.readAsDataURL(blob);
         // encode as base64string
         reader.onloadend = () => {
-          this.setState({ recordingString: reader.result })
+          this.setState({recordingString: reader.result})
           // send the recording to the store
-          encodeAudio(reader.result);
+          // encodeAudio(reader.result);
         }
+
+        // UPLOAD FILE TO FIREBASE EXPERIMENT
+
+        // Create the file metadata
+        var metadata = {
+          contentType: "audio/wav"
+        };
+
+        // set recording name as the article name
+        blob.name = 'recording' + String(new Date());
+
+        // Upload file and metadata to the object 'images/mountains.jpg'
+        var uploadTask = recordingsStorageRef.child(blob.name).put(blob, metadata);
+        // send a reference to the store be able to access the recording in the future
+        sendRecordingRef(blob.name);
+
+        // END EXPERIMENT
 
         // call callback function
         callback(blob);
@@ -129,9 +149,9 @@ class RecorderComponent extends React.Component {
   }
 
   updateArticle = () => {
-    const { articleId, article } = this.props;
-    const { encodeAudio, updateFirebaseArticle, recorder } = this.props;
-    updateFirebaseArticle(articleId, { recording: recorder });
+    const {articleId, article} = this.props;
+    const {encodeAudio, updateFirebaseArticle, recorder} = this.props;
+    updateFirebaseArticle(articleId, {recording: recorder});
     // send data back to the ArticleView to update the NavBar
     this.props.callbackFromParent(recorder);
     // empty the Recorder reducer
@@ -139,7 +159,7 @@ class RecorderComponent extends React.Component {
   }
 
   replayRecording = () => {
-    const { recorder } = this.props;
+    const {recorder} = this.props;
     console.log('sent to the store: ', recorder);
     const sound = new Audio(this.state.recordingString);
     sound.play();
@@ -151,27 +171,32 @@ class RecorderComponent extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        <Button size="small" onClick = {() => this.startRecording()}>
-          Start <MdPlayArrow style={{marginLeft: 8, fontSize: 18}} />
-        </Button>
-        <Button size="small" onClick = {() => this.stopRecording(() => {console.log("stopped")}, "audio/wav")}>
-          Stop <MdStop style={{marginLeft: 8, fontSize: 18}}/>
-        </Button>
-        {this.props.articleView ? (
-          <Button size="small" disabled={this.state.recordingString === ''} onClick = {() => this.updateArticle()}>
+    return (<div>
+      <Button size="small" onClick={() => this.startRecording()}>
+        Start
+        <MdPlayArrow style={{
+            marginLeft: 8,
+            fontSize: 18
+          }}/>
+      </Button>
+      <Button size="small" onClick={() => this.stopRecording(() => {console.log("stopped")}, "audio/wav")}>
+        Stop
+        <MdStop style={{
+            marginLeft: 8,
+            fontSize: 18
+          }}/>
+      </Button>
+      {
+        this.props.articleView
+          ? (<Button size="small" disabled={this.state.recordingString === ''} onClick={() => this.updateArticle()}>
             Update Article
-          </Button>
-        ) : (<div></div>)
-        }
-      </div>
-    )
+          </Button>)
+          : (<div></div>)
+      }
+    </div>)
   }
 }
 
-const mapStateToProps = state => ({
-  recorder: state.recorder
-});
+const mapStateToProps = state => ({recorder: state.recorder});
 
-export default connect(mapStateToProps, { encodeAudio, updateFirebaseArticle })(RecorderComponent);
+export default connect(mapStateToProps, {encodeAudio, updateFirebaseArticle, sendRecordingRef})(RecorderComponent);

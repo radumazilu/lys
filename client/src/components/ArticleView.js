@@ -89,6 +89,7 @@ class ArticleView extends React.Component {
 
   render() {
     const { article } = this.props.location.state;
+    console.log(" ---- the recording reference is ---- " + article.recordingRef);
     const { id } = this.props.match.params;
     const bull = <span style={{display: 'inline-block', margin: '0 2px', transform: 'scale(0.8)'}}>•</span>;
     return (
