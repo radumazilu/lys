@@ -95,11 +95,7 @@ class ArticleView extends React.Component {
     const bull = <span style={{display: 'inline-block', margin: '0 2px', transform: 'scale(0.8)'}}>•</span>;
     return (
       <div>
-<<<<<<< HEAD
-        <NavBar articleView={true} recordingRef={this.state.localRecording} />
-=======
         <NavBar articleView={true} recording={this.state.localRecordingRef} />
->>>>>>> 43e3b58850a589bcead0da1f20d70364cc72c056
         <div className="content-wrapper" style={{ paddingTop: 64 }}>
           <Card style={{maxWidth: 730, padding: 30, boxShadow: 'none', minWidth: '50%'}}>
             <CardContent>
