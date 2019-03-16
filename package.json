@@ -14,6 +14,10 @@
     "python-shell": "^1.0.7",
     "react-voice-components": "^1.0.0"
   },
+  "engines": {
+    "yarn": "1.x",
+    "node": "8.x"
+  },
   "devDependencies": {
     "case-sensitive-paths-webpack-plugin": "^2.1.2",
     "concurrently": "^3.5.1",
