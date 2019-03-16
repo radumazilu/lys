@@ -69,7 +69,7 @@ class NavBar extends React.Component {
               Lys
             </Typography>
             {/* if we are in the article view, display play/pause buttons */}
-            {this.props.articleView && this.props.recording ? (
+            {this.props.articleView && this.props.recordingRef ? (
               <div>
                 <Button size="small" style={{color: '#fff'}} onClick={() => this.play(sound)}>
                   Play <MdPlayArrow style={{marginLeft: 8, fontSize: 18}} />
