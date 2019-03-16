@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux";
 import * as actions from '../actions/index';
+import { articlesRef } from "../firebase";
 import RecorderComponent from './RecorderComponent';
 
 // Material UI Next v1.0.0-rc.0
@@ -33,7 +34,11 @@ class ArticleForm extends React.Component {
 
   callApi = async (link) => {
     console.log("API call was made");
+    console.log('Link was:' + link)
     const response = await fetch('/app/scrape?link=' + link);
+
+    console.log('Response:');
+    console.log(response);
 
     const body = await response.json();
     if (response.status !== 200)
@@ -51,7 +56,7 @@ class ArticleForm extends React.Component {
   };
 
   prepareSubmit = async (callback, event) => {
-    const {addFormLink} = this.state;
+    const { addFormLink } = this.state;
 
     event.preventDefault();
 
@@ -64,26 +69,31 @@ class ArticleForm extends React.Component {
   }
 
   handleFormSubmit = () => {
-    const {addFormTitle, addFormLink, scrapedContent} = this.state;
-    const {addArticle} = this.props;
+    const { addFormTitle, addFormLink, scrapedContent } = this.state;
+    const { addArticle } = this.props;
     // recorder is the base64string of the recording received through the action
-    const {user, recorder} = this.props;
+    const { user } = this.props;
+    let recording = this.props.recording;
+    let recordingRef = this.props.recordingRef;
 
-    console.log("the recording is: ", recorder);
+    if (recording === null || recordingRef === null) {
+      recording = 'No recording yet';
+      recordingRef = 'No recording yet';
+    }
 
     // define new article
     let newArticle = {
       title: addFormTitle,
       link: addFormLink,
       user: user,
-      // recording: recorder,
-      recordingRef: recorder,
+      recording: recording,
+      recordingRef: recordingRef,
       scrapedContent: scrapedContent
     }
 
     // add article with stringified format
     addArticle(JSON.parse(JSON.stringify(newArticle)));
-    this.setState({addFormTitle: "", addFormLink: "", addFormVisible: false, scrapedContent: ""});
+    this.setState({ addFormTitle: "", addFormLink: "", addFormVisible: false, scrapedContent: "" });
   };
 
   toggleRecorderVisibility = () => {
@@ -134,6 +144,11 @@ class ArticleForm extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({articles: state.articles, user: state.auth, recorder: state.recorder});
+const mapStateToProps = state => ({
+  articles: state.articles,
+  user: state.auth,
+  recording: state.recording,
+  recordingRef: state.recordingRef
+});
 
 export default connect(mapStateToProps, actions)(ArticleForm);

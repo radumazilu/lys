@@ -36,6 +36,7 @@ class ArticleListItem extends React.Component {
   }
 
   play = (sound) => {
+    console.log(sound);
     sound.play();
     // this.setState({recordingIsPlaying: true});
   }
@@ -46,9 +47,10 @@ class ArticleListItem extends React.Component {
   }
 
   render() {
-    const { articleId, article, deleteArticle } = this.props;
+    const { article, deleteArticle } = this.props;
     // make the recording available to this environment
-    const sound = new Audio(article.recording);
+    let sound = new Audio(article.recordingRef);
+    sound.type = 'audio/wav';
     return (
       <Grid item xs={12} sm={6} md={6}>
         <Card className="article-card">
@@ -60,10 +62,10 @@ class ArticleListItem extends React.Component {
             subheader={article.user.displayName || "No username available"}
             action={
               <Link to={{
-                      pathname: `/app/${articleId}`,
+                      pathname: `/app/${article.title}`,
                       state: {
                         article: article,
-                        articleId: articleId
+                        articleId: article.id
                       }
                     }}>
                 <IconButton color="default">
@@ -85,7 +87,7 @@ class ArticleListItem extends React.Component {
               ) }
             </CardContent>
             <div className="controls" style={{display: "flex", alignItems: 'center', padding: 10}}>
-              <IconButton aria-label="Delete" onClick={() => deleteArticle(articleId)}>
+              <IconButton aria-label="Delete" onClick={() => deleteArticle(article.id)}>
                 <MdDelete />
               </IconButton>
               {article.recording ? (

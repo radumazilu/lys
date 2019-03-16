@@ -2,7 +2,10 @@
 import { articlesRef, authRef, provider } from "../firebase";
 
 export const addArticle = newArticle => async dispatch => {
-  articlesRef.push().set(newArticle);
+  // generate and store the key to the new article
+  var newRef = articlesRef.push();
+  newArticle.id = newRef.key;
+  newRef.set(newArticle);
 };
 
 export const deleteArticle = articleId => async dispatch => {

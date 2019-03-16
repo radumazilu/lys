@@ -55,8 +55,8 @@ class NavBar extends React.Component {
   render() {
     // make the recording available to this environment
     let sound = '';
-    if (this.props.recording) {
-      sound = new Audio(this.props.recording);
+    if (this.props.recordingRef) {
+      sound = new Audio(this.props.recordingRef);
     }
     return (
       <div style={{flexGrow: 1}}>
