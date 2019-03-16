@@ -21,7 +21,7 @@ class ArticleView extends React.Component {
 
   state = {
     recordedAudio: false, // becomes true of the user finishes recording the audio
-    localRecording: this.props.location.state.article.recording || null // also hold the recording to update it in real time
+    localRecordingRef: this.props.location.state.article.recordingRef || null // also hold the recording to update it in real time
   }
 
   componentDidMount() {
@@ -84,17 +84,22 @@ class ArticleView extends React.Component {
   }
 
   getBackRecordingFromChild = (rec) => {
-    this.setState({ localRecording: rec })
+    this.setState({ localRecordingRef: rec })
   }
 
   render() {
     const { article } = this.props.location.state;
-    console.log(" ---- the recording reference is ---- " + article.recordingRef);
+    console.log("The recording is ----" + article.recording);
+    console.log("The recording reference is ---- " + article.recordingRef);
     const { id } = this.props.match.params;
     const bull = <span style={{display: 'inline-block', margin: '0 2px', transform: 'scale(0.8)'}}>•</span>;
     return (
       <div>
+<<<<<<< HEAD
         <NavBar articleView={true} recordingRef={this.state.localRecording} />
+=======
+        <NavBar articleView={true} recording={this.state.localRecordingRef} />
+>>>>>>> 43e3b58850a589bcead0da1f20d70364cc72c056
         <div className="content-wrapper" style={{ paddingTop: 64 }}>
           <Card style={{maxWidth: 730, padding: 30, boxShadow: 'none', minWidth: '50%'}}>
             <CardContent>
@@ -133,7 +138,7 @@ class ArticleView extends React.Component {
               </Typography>
             </CardContent>
             <CardActions className="article-recording-actions">
-              <RecorderComponent callbackFromParent={this.getBackRecordingFromChild} articleView={true} article={article} articleId={id} />
+              <RecorderComponent callbackFromParent={this.getBackRecordingFromChild} articleView={true} article={article} articleId={article.id} />
             </CardActions>
           </Card>
         </div>
@@ -143,7 +148,7 @@ class ArticleView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  recorder: state.recorder
+  recording: state.recording
 });
 
 export default connect(mapStateToProps, { encodeAudio, updateFirebaseArticle })(ArticleView);
