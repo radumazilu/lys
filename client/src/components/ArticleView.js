@@ -21,7 +21,7 @@ class ArticleView extends React.Component {
 
   state = {
     recordedAudio: false, // becomes true of the user finishes recording the audio
-    localRecording: this.props.location.state.article.recording || null // also hold the recording to update it in real time
+    localRecordingRef: this.props.location.state.article.recordingRef || null // also hold the recording to update it in real time
   }
 
   componentDidMount() {
@@ -84,7 +84,7 @@ class ArticleView extends React.Component {
   }
 
   getBackRecordingFromChild = (rec) => {
-    this.setState({ localRecording: rec })
+    this.setState({ localRecordingRef: rec })
   }
 
   render() {
@@ -95,7 +95,7 @@ class ArticleView extends React.Component {
     const bull = <span style={{display: 'inline-block', margin: '0 2px', transform: 'scale(0.8)'}}>•</span>;
     return (
       <div>
-        <NavBar articleView={true} recording={this.state.localRecording} />
+        <NavBar articleView={true} recording={this.state.localRecordingRef} />
         <div className="content-wrapper" style={{ paddingTop: 64 }}>
           <Card style={{maxWidth: 730, padding: 30, boxShadow: 'none', minWidth: '50%'}}>
             <CardContent>
@@ -134,7 +134,7 @@ class ArticleView extends React.Component {
               </Typography>
             </CardContent>
             <CardActions className="article-recording-actions">
-              <RecorderComponent callbackFromParent={this.getBackRecordingFromChild} articleView={true} article={article} articleId={id} />
+              <RecorderComponent callbackFromParent={this.getBackRecordingFromChild} articleView={true} article={article} articleId={article.id} />
             </CardActions>
           </Card>
         </div>
