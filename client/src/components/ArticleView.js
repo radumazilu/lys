@@ -89,7 +89,8 @@ class ArticleView extends React.Component {
 
   render() {
     const { article } = this.props.location.state;
-    console.log(" ---- the recording reference is ---- " + article.recordingRef);
+    console.log("The recording is ----" + article.recording);
+    console.log("The recording reference is ---- " + article.recordingRef);
     const { id } = this.props.match.params;
     const bull = <span style={{display: 'inline-block', margin: '0 2px', transform: 'scale(0.8)'}}>•</span>;
     return (
@@ -143,7 +144,7 @@ class ArticleView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  recorder: state.recorder
+  recording: state.recording
 });
 
 export default connect(mapStateToProps, { encodeAudio, updateFirebaseArticle })(ArticleView);

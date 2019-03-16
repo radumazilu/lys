@@ -94,7 +94,7 @@ class RecorderComponent extends React.Component {
    * optional and specifies the format to export the blob either wav or mp3
    */
   stopRecording = (callback, AudioFormat) => {
-    const {encodeAudio, sendRecordingRef} = this.props;
+    const { encodeAudio, sendRecordingRef } = this.props;
 
     // Stop the recorder instance
     this.state.recorder && this.state.recorder.stop();
@@ -119,7 +119,7 @@ class RecorderComponent extends React.Component {
         reader.onloadend = () => {
           this.setState({recordingString: reader.result})
           // send the recording to the store
-          // encodeAudio(reader.result);
+          encodeAudio(reader.result);
         }
 
         // UPLOAD FILE TO FIREBASE EXPERIMENT
@@ -130,14 +130,16 @@ class RecorderComponent extends React.Component {
         };
 
         // set recording name as the article name
-        blob.name = 'recording' + String(new Date());
+        blob.name = 'recording ' + String(new Date());
 
-        // Upload file and metadata to the object 'images/mountains.jpg'
-        var uploadTask = recordingsStorageRef.child(blob.name).put(blob, metadata);
-        // send a reference to the store be able to access the recording in the future
-        sendRecordingRef(blob.name);
+        console.log("Blob is:");
+        console.log(blob);
 
-        // END EXPERIMENT
+        // Upload file and metadata
+        recordingsStorageRef.child(blob.name).put(blob, metadata).then(function(snapshot){
+          // send a reference to the store be able to access the recording in the future
+          sendRecordingRef(snapshot.downloadURL);
+        });
 
         // call callback function
         callback(blob);
@@ -149,18 +151,17 @@ class RecorderComponent extends React.Component {
   }
 
   updateArticle = () => {
-    const {articleId, article} = this.props;
-    const {encodeAudio, updateFirebaseArticle, recorder} = this.props;
-    updateFirebaseArticle(articleId, {recording: recorder});
+    const { article, encodeAudio, updateFirebaseArticle, recording, recordingRef } = this.props;
+    updateFirebaseArticle(article.id, {recording: recording, recordingRef: recordingRef});
     // send data back to the ArticleView to update the NavBar
-    this.props.callbackFromParent(recorder);
+    this.props.callbackFromParent(recording);
     // empty the Recorder reducer
     encodeAudio(null);
   }
 
   replayRecording = () => {
-    const {recorder} = this.props;
-    console.log('sent to the store: ', recorder);
+    const { recording } = this.props;
+    console.log('sent to the store: ', recording);
     const sound = new Audio(this.state.recordingString);
     sound.play();
   }
@@ -197,6 +198,9 @@ class RecorderComponent extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({recorder: state.recorder});
+const mapStateToProps = state => ({
+  recording: state.recording,
+  recordingRef: state.recordingRef
+});
 
 export default connect(mapStateToProps, {encodeAudio, updateFirebaseArticle, sendRecordingRef})(RecorderComponent);
