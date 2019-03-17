@@ -123,21 +123,25 @@ class ArticleView extends React.Component {
             </CardActions>
           </Card>
         </div>
-        <div className="recording-buttons">
-          <Card>
-            <CardContent style={{textAlign: 'justify'}}>
-              <Typography style={{marginBottom: 16, fontSize: 14}} color="textSecondary">
-                This article doesn't have a recording yet
-              </Typography>
-              <Typography variant="headline" component="h2">
-                Would you like to read it out loud?
-              </Typography>
-            </CardContent>
-            <CardActions className="article-recording-actions">
-              <RecorderComponent callbackFromParent={this.getBackRecordingFromChild} articleView={true} article={article} articleId={article.id} />
-            </CardActions>
-          </Card>
-        </div>
+        {article.recording ? (
+          <div></div>
+        ) : (
+          <div className="recording-buttons">
+            <Card>
+              <CardContent style={{textAlign: 'justify'}}>
+                <Typography style={{marginBottom: 16, fontSize: 14}} color="textSecondary">
+                  This article doesn't have a recording yet
+                </Typography>
+                <Typography variant="headline" component="h2">
+                  Would you like to read it out loud?
+                </Typography>
+              </CardContent>
+              <CardActions className="article-recording-actions">
+                <RecorderComponent callbackFromParent={this.getBackRecordingFromChild} articleView={true} article={article} articleId={article.id} />
+              </CardActions>
+            </Card>
+          </div>
+        )}
       </div>
     );
   }
