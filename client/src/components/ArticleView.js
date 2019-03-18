@@ -83,19 +83,22 @@ class ArticleView extends React.Component {
     this.setState({ recordedAudio: true });
   }
 
-  getBackRecordingFromChild = (rec) => {
-    this.setState({ localRecordingRef: rec })
+  updateLocalRecordingRef = (ref) => {
+    this.setState({ localRecordingRef: ref })
   }
 
   render() {
     const { article } = this.props.location.state;
-    console.log("The recording is ----" + article.recordingRef);
-    console.log("The recording reference is ---- " + article.recordingRef);
+    console.log(article.recordingRef);
+    if (article.recordingRef) {
+      console.log("The recording reference is ---- " + article.recordingRef);
+      // this.updateLocalRecordingRef(article.recordingRef);
+    }
     const { id } = this.props.match.params;
     const bull = <span style={{display: 'inline-block', margin: '0 2px', transform: 'scale(0.8)'}}>•</span>;
     return (
       <div>
-        <NavBar articleView={true} recordingRef={this.state.localRecordingRef} />
+        <NavBar articleView={true} recordingRef={this.state.localRecordingRef || article.recordingRef} />
         <div className="content-wrapper" style={{ paddingTop: 64 }}>
           <Card style={{maxWidth: 730, padding: 30, boxShadow: 'none', minWidth: '50%'}}>
             <CardContent>
@@ -123,32 +126,28 @@ class ArticleView extends React.Component {
             </CardActions>
           </Card>
         </div>
-        {article.recordingRef ? (
-          <div></div>
-        ) : (
-          <div className="recording-buttons">
-            <Card>
-              <CardContent style={{textAlign: 'justify'}}>
-                <Typography style={{marginBottom: 16, fontSize: 14}} color="textSecondary">
-                  This article doesn't have a recording yet
-                </Typography>
-                <Typography variant="headline" component="h2">
-                  Would you like to read it out loud?
-                </Typography>
-              </CardContent>
-              <CardActions className="article-recording-actions">
-                <RecorderComponent callbackFromParent={this.getBackRecordingFromChild} articleView={true} article={article} articleId={article.id} />
-              </CardActions>
-            </Card>
-          </div>
-        )}
+        <div className="recording-buttons">
+          <Card>
+            <CardContent style={{textAlign: 'justify'}}>
+              <Typography style={{marginBottom: 16, fontSize: 14}} color="textSecondary">
+                This article doesn't have a recording yet
+              </Typography>
+              <Typography variant="headline" component="h2">
+                Would you like to read it out loud?
+              </Typography>
+            </CardContent>
+            <CardActions className="article-recording-actions">
+              <RecorderComponent callbackFromParent={this.updateLocalRecordingRef} articleView={true} article={article} />
+            </CardActions>
+          </Card>
+        </div>
       </div>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  recording: state.recording
+  recordingRef: state.recordingRef
 });
 
 export default connect(mapStateToProps, { encodeAudio, updateFirebaseArticle })(ArticleView);

@@ -55,8 +55,8 @@ class NavBar extends React.Component {
   render() {
     // make the recording available to this environment
     let sound = '';
-    console.log(this.props);
     if (this.props.recordingRef) {
+      console.log(this.props.recordingRef);
       sound = new Audio(this.props.recordingRef);
     }
     return (
@@ -67,7 +67,7 @@ class NavBar extends React.Component {
               <i className="material-icons">menu</i>
             </IconButton>
             <Typography variant="title" color="inherit" style={{flex: 1}}>
-              Lys
+              Listle
             </Typography>
             {/* if we are in the article view, display play/pause buttons */}
             {this.props.articleView && this.props.recordingRef ? (
