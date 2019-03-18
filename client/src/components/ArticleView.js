@@ -89,7 +89,7 @@ class ArticleView extends React.Component {
 
   render() {
     const { article } = this.props.location.state;
-    console.log("The recording is ----" + article.recording);
+    console.log("The recording is ----" + article.recordingRef);
     console.log("The recording reference is ---- " + article.recordingRef);
     const { id } = this.props.match.params;
     const bull = <span style={{display: 'inline-block', margin: '0 2px', transform: 'scale(0.8)'}}>•</span>;
@@ -123,7 +123,7 @@ class ArticleView extends React.Component {
             </CardActions>
           </Card>
         </div>
-        {article.recording ? (
+        {article.recordingRef ? (
           <div></div>
         ) : (
           <div className="recording-buttons">

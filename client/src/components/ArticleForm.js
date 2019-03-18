@@ -76,11 +76,6 @@ class ArticleForm extends React.Component {
     let recording = this.props.recording;
     let recordingRef = this.props.recordingRef;
 
-    if (recording === null || recordingRef === null) {
-      recording = 'No recording yet';
-      recordingRef = 'No recording yet';
-    }
-
     // define new article
     let newArticle = {
       title: addFormTitle,
