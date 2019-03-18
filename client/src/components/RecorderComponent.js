@@ -154,7 +154,7 @@ class RecorderComponent extends React.Component {
     const { article, encodeAudio, updateFirebaseArticle, recording, recordingRef } = this.props;
     updateFirebaseArticle(article.id, {recording: recording, recordingRef: recordingRef});
     // send data back to the ArticleView to update the NavBar
-    this.props.callbackFromParent(recording);
+    this.props.callbackFromParent(recordingRef);
     // empty the Recorder reducer
     encodeAudio(null);
   }

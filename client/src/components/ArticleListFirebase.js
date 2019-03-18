@@ -12,7 +12,6 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 
-
 class ArticleListFirebase extends React.Component {
 
   state = {
@@ -104,7 +103,8 @@ class ArticleListFirebase extends React.Component {
 const mapStateToProps = state => ({
   articles: state.articles,
   user: state.auth,
-  recorder: state.recorder
+  recording: state.recording,
+  recordingRef: state.recordingRef
 });
 
 // give the actions with mapDispatchToProps()

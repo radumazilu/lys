@@ -90,12 +90,12 @@ class ArticleListItem extends React.Component {
               <IconButton aria-label="Delete" onClick={() => deleteArticle(article.id)}>
                 <MdDelete />
               </IconButton>
-              {article.recording ? (
+              {article.recordingRef ? (
                 <IconButton onClick={() => this.play(sound)} aria-label="Play">
                   <MdPlayArrow className="play-icon" />
                 </IconButton>
-              ) : (<p>No recording yet</p>)}
-              {article.recording ? (
+              ) : (<p></p>)}
+              {article.recordingRef ? (
                 <IconButton onClick={() => this.pause(sound)} aria-label="Pause">
                   <MdPause />
                 </IconButton>
