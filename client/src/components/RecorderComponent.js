@@ -151,19 +151,15 @@ class RecorderComponent extends React.Component {
   }
 
   updateArticle = () => {
-    const { article, encodeAudio, updateFirebaseArticle, recording, recordingRef } = this.props;
-    updateFirebaseArticle(article.id, {recording: recording, recordingRef: recordingRef});
+    const { article, encodeAudio, updateFirebaseArticle, recordingRef, callbackFromParent } = this.props;
+    console.log(recordingRef);
+    updateFirebaseArticle(article.id, { recordingRef: recordingRef });
     // send data back to the ArticleView to update the NavBar
-    this.props.callbackFromParent(recording);
+    callbackFromParent(recordingRef);
     // empty the Recorder reducer
     encodeAudio(null);
-  }
-
-  replayRecording = () => {
-    const { recording } = this.props;
-    console.log('sent to the store: ', recording);
-    const sound = new Audio(this.state.recordingString);
-    sound.play();
+    // disable the update button
+    this.setState({ recordingString: '' });
   }
 
   componentDidMount() {

@@ -104,7 +104,6 @@ class ArticleListFirebase extends React.Component {
 const mapStateToProps = state => ({
   articles: state.articles,
   user: state.auth,
-  recorder: state.recorder
 });
 
 // give the actions with mapDispatchToProps()
